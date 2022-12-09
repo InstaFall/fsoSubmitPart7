@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 
+const baseUrl = "https://restcountries.com/v3.1/name"
+
 const useField = (type) => {
   const [value, setValue] = useState('')
 
@@ -18,7 +20,19 @@ const useField = (type) => {
 const useCountry = (name) => {
   const [country, setCountry] = useState(null)
 
-  useEffect(() => {})
+  useEffect(() => {
+    const get = async () => {
+      try {
+    const response = await axios.get(`${baseUrl}/${name}?fullText=true`)
+    setCountry(response.data[0])
+    console.log(response.data[0])
+      }
+      catch(err) {
+        console.log(err)
+      }
+    }
+    if(name) get()
+  },[name])
 
   return country
 }
@@ -52,7 +66,7 @@ const App = () => {
     <div>
       <form onSubmit={fetch}>
         <input {...nameInput} />
-        <button>find</button>
+        <button type='submit'>find</button>
       </form>
 
       <Country country={country} />
