@@ -1,8 +1,12 @@
+import { useDispatch } from "react-redux"
+import { setUser } from "../reducers/loggedUserReducer"
+
 const Logout = (props) => {
-  const { user, setUser } = props
+  const { user } = props
+  const dispatch = useDispatch()
   const handleLogout = () => {
     window.localStorage.clear()
-    setUser(null)
+    dispatch(setUser(null))
   }
   return (
     <div>

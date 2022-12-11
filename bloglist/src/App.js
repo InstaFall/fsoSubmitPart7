@@ -15,16 +15,17 @@ import {
   initializeBlogs,
   likeBlogAction,
 } from "./reducers/blogReducer"
+import { setUser } from "./reducers/loggedUserReducer"
 
 const App = () => {
   //const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
-  const [user, setUser] = useState(null)
+  //const [user, setUser] = useState(null)
   const ref = useRef()
   const dispatch = useDispatch()
   const notification = useSelector((state) => state.notification)
-
+  const user = useSelector((state) => state.loggedUser)
   const blogs = useSelector((state) => state.blogs)
 
   useEffect(() => {
@@ -35,7 +36,7 @@ const App = () => {
     const loggedUser = window.localStorage.getItem("loggedUser")
     if (loggedUser) {
       const parsedUser = JSON.parse(loggedUser)
-      setUser(parsedUser)
+      dispatch(setUser(parsedUser))
       blogService.setToken(parsedUser.token)
     }
   }, [])
@@ -44,7 +45,7 @@ const App = () => {
     e.preventDefault()
     try {
       const response = await loginService.login({ username, password })
-      setUser(response)
+      dispatch(setUser(response))
       window.localStorage.setItem("loggedUser", JSON.stringify(response))
       setUsername("")
       setPassword("")
@@ -110,7 +111,7 @@ const App = () => {
     <div>
       <Notification />
       <h2>blogs</h2>
-      <Logout user={user} setUser={setUser} />
+      <Logout user={user} />
       <Toggleable label="add" ref={ref}>
         <NewBlog refs={ref} />
       </Toggleable>
