@@ -9,7 +9,12 @@ import NewBlog from "./components/NewBlog"
 import Toggleable from "./components/Toggleable"
 import { setNotification } from "./reducers/notificationReducer"
 import { useDispatch, useSelector } from "react-redux"
-import { createBlog, initializeBlogs } from "./reducers/blogReducer"
+import {
+  createBlog,
+  deleteBlogAction,
+  initializeBlogs,
+  likeBlogAction,
+} from "./reducers/blogReducer"
 
 const App = () => {
   //const [blogs, setBlogs] = useState([])
@@ -76,13 +81,7 @@ const App = () => {
   }
 
   const likeBlog = async (blog) => {
-    const updatedBlog = { ...blog, likes: blog.likes + 1 }
-    const response = await blogService.updateBlog(updatedBlog, updatedBlog.id)
-    setBlogs(
-      sortBlogsByLikes(
-        blogs.map((el) => (el.id === updatedBlog.id ? response : el))
-      )
-    )
+    dispatch(likeBlogAction(blog))
   }
 
   const deleteBlog = async (blogObject) => {
@@ -94,7 +93,7 @@ const App = () => {
       const loggedUser = JSON.parse(window.localStorage.getItem("loggedUser"))
       blogService.setToken(loggedUser.token)
       try {
-        await blogService.deleteBlog(blogObject.id)
+        dispatch(deleteBlogAction(blogObject.id))
         dispatch(
           setNotification({
             ...notification,
@@ -104,9 +103,6 @@ const App = () => {
         setTimeout(() => {
           dispatch(setNotification({ ...notification, message: null }))
         }, 3000)
-        setBlogs(
-          sortBlogsByLikes(blogs.filter((el) => el.id !== blogObject.id))
-        )
       } catch (exception) {
         console.log(exception)
       }
