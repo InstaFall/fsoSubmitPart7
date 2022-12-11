@@ -1,4 +1,4 @@
-const path = require("path");
+const path = require("path")
 
 const config = {
   entry: "./src/index.js",
@@ -34,6 +34,6 @@ const config = {
     port: 3000,
   },
   devtool: "source-map",
-};
+}
 
-module.exports = config;
+module.exports = config

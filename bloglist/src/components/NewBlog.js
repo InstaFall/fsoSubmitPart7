@@ -1,22 +1,22 @@
-import { useState } from "react";
+import { useState } from "react"
 
 const NewBlog = (props) => {
   const [newBlog, setNewBlog] = useState({
     title: "",
     author: "",
     url: "",
-  });
-  const { addBlog } = props;
+  })
+  const { addBlog } = props
 
   const handleNewBlogSubmit = (e) => {
-    e.preventDefault();
-    addBlog(newBlog);
+    e.preventDefault()
+    addBlog(newBlog)
     setNewBlog({
       title: "",
       author: "",
       url: "",
-    });
-  };
+    })
+  }
 
   return (
     <form onSubmit={handleNewBlogSubmit}>
@@ -56,7 +56,7 @@ const NewBlog = (props) => {
       </div>
       <button type="submit">create</button>
     </form>
-  );
-};
+  )
+}
 
-export default NewBlog;
+export default NewBlog

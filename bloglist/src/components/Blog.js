@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useState } from "react"
 
 const Blog = ({ username, blog, likeBlog, deleteBlog }) => {
-  const [view, setView] = useState(false);
+  const [view, setView] = useState(false)
   const toggleView = () => {
-    setView(!view);
-  };
+    setView(!view)
+  }
 
   return view ? (
     <ul className="fullview">
@@ -27,7 +27,7 @@ const Blog = ({ username, blog, likeBlog, deleteBlog }) => {
       <b>{blog.title}</b> by {blog.author}{" "}
       <button onClick={toggleView}>view</button>
     </div>
-  );
-};
+  )
+}
 
-export default Blog;
+export default Blog
