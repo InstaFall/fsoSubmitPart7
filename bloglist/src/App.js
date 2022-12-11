@@ -9,9 +9,10 @@ import NewBlog from "./components/NewBlog"
 import Toggleable from "./components/Toggleable"
 import { setNotification } from "./reducers/notificationReducer"
 import { useDispatch, useSelector } from "react-redux"
+import { createBlog, initializeBlogs } from "./reducers/blogReducer"
 
 const App = () => {
-  const [blogs, setBlogs] = useState([])
+  //const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const [user, setUser] = useState(null)
@@ -19,12 +20,10 @@ const App = () => {
   const dispatch = useDispatch()
   const notification = useSelector((state) => state.notification)
 
-  const sortBlogsByLikes = (blogArray) => {
-    return [...blogArray].sort((a, b) => b.likes - a.likes)
-  }
+  const blogs = useSelector((state) => state.blogs)
 
   useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(sortBlogsByLikes(blogs)))
+    dispatch(initializeBlogs())
   }, [])
 
   useEffect(() => {
@@ -60,17 +59,16 @@ const App = () => {
     const loggedUser = JSON.parse(window.localStorage.getItem("loggedUser"))
     blogService.setToken(loggedUser.token)
     try {
-      const response = await blogService.createBlog(blogObject)
+      dispatch(createBlog(blogObject))
       dispatch(
         setNotification({
           ...notification,
-          message: `a new blog, ${response.title} by ${response.author} is added!`,
+          message: `a new blog, ${blogObject.title} by ${blogObject.author} is added!`,
         })
       )
       setTimeout(() => {
         dispatch(setNotification({ ...notification, message: null }))
       }, 5000)
-      setBlogs(sortBlogsByLikes([...blogs, response]))
       ref.current.toggleVisible()
     } catch (exception) {
       console.log(exception)
