@@ -60,26 +60,6 @@ const App = () => {
     }
   }
 
-  const addBlog = async (blogObject) => {
-    const loggedUser = JSON.parse(window.localStorage.getItem("loggedUser"))
-    blogService.setToken(loggedUser.token)
-    try {
-      dispatch(createBlog(blogObject))
-      dispatch(
-        setNotification({
-          ...notification,
-          message: `a new blog, ${blogObject.title} by ${blogObject.author} is added!`,
-        })
-      )
-      setTimeout(() => {
-        dispatch(setNotification({ ...notification, message: null }))
-      }, 5000)
-      ref.current.toggleVisible()
-    } catch (exception) {
-      console.log(exception)
-    }
-  }
-
   const likeBlog = async (blog) => {
     dispatch(likeBlogAction(blog))
   }
@@ -132,7 +112,7 @@ const App = () => {
       <h2>blogs</h2>
       <Logout user={user} setUser={setUser} />
       <Toggleable label="add" ref={ref}>
-        <NewBlog addBlog={addBlog} />
+        <NewBlog refs={ref} />
       </Toggleable>
       <div>
         {blogs.map((blog) => (
