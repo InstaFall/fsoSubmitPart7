@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react"
-import Blog from "./components/Blog"
+import Blog from "./components/Blog/Blog"
 import blogService from "./services/blogs"
 import loginService from "./services/logins"
 import LoginForm from "./components/LoginForm"
@@ -15,7 +15,7 @@ import Nav from "./components/Nav"
 import Users from "./components/Users"
 import User from "./components/User"
 import userService from "./services/users"
-import BlogDetailed from "./components/BlogDetailed"
+import BlogDetailed from "./components/Blog/BlogDetailed"
 
 const App = () => {
   //const [blogs, setBlogs] = useState([])

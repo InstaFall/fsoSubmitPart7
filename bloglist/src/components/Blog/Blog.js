@@ -1,15 +1,15 @@
 import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { Link } from "react-router-dom"
-import { deleteBlogAction, likeBlogAction } from "../reducers/blogReducer"
-import { setNotification } from "../reducers/notificationReducer"
-import blogService from "../services/blogs"
+import { deleteBlogAction, likeBlogAction } from "../../reducers/blogReducer"
+import { setNotification } from "../../reducers/notificationReducer"
+import blogService from "../../services/blogs"
 
 const Blog = ({ username, blog }) => {
   const [view, setView] = useState(false)
   const dispatch = useDispatch()
   const notification = useSelector((state) => state.notification)
-  console.log("prop bloggggg", blog)
+  //console.log("prop bloggggg", blog)
   const toggleView = () => {
     setView(!view)
   }

@@ -56,4 +56,12 @@ export const deleteBlogAction = (id) => {
     dispatch(setBlogs(state.filter((el) => el.id !== id)))
   }
 }
+
+export const commentBlogAction = (blog, comment) => {
+  return async (dispatch, getState) => {
+    const state = getState().blogs
+    const response = await blogService.commentBlog(blog.id, comment)
+    dispatch(setBlogs(state.map((el) => (el.id === blog.id ? response : el))))
+  }
+}
 export default blogSlice.reducer
