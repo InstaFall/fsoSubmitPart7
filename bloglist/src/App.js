@@ -11,14 +11,24 @@ import { setNotification } from "./reducers/notificationReducer"
 import { useDispatch, useSelector } from "react-redux"
 import { initializeBlogs } from "./reducers/blogReducer"
 import { setUser } from "./reducers/loggedUserReducer"
-import { Route, Routes, useNavigate } from "react-router-dom"
+import { Route, Routes, useMatch, useNavigate } from "react-router-dom"
 import Nav from "./components/Nav"
 import Users from "./components/Users"
+import User from "./components/User"
+import userService from "./services/users"
 
 const App = () => {
   //const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
+  const [users, setUsers] = useState([])
+  useEffect(() => {
+    const fetch = async () => {
+      const response = await userService.getAll()
+      setUsers(response)
+    }
+    fetch()
+  }, [])
   //const [user, setUser] = useState(null)
   const ref = useRef()
   const dispatch = useDispatch()
@@ -26,6 +36,8 @@ const App = () => {
   const user = useSelector((state) => state.loggedUser)
   const blogs = useSelector((state) => state.blogs)
   const navigate = useNavigate()
+  const match = useMatch("/users/:id")
+  const matchUser = match ? users.find((el) => el.id === match.params.id) : null
 
   useEffect(() => {
     dispatch(initializeBlogs())
@@ -108,7 +120,16 @@ const App = () => {
               <h2>blogs</h2>
               <Nav />
               <Logout user={user} />
-              <Users />
+              <Users users={users} />
+            </>
+          }
+        />
+        <Route
+          path="/users/:id"
+          element={
+            <>
+              <Nav />
+              <User user={matchUser} />
             </>
           }
         />
