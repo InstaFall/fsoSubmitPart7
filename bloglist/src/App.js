@@ -9,13 +9,11 @@ import NewBlog from "./components/NewBlog"
 import Toggleable from "./components/Toggleable"
 import { setNotification } from "./reducers/notificationReducer"
 import { useDispatch, useSelector } from "react-redux"
-import {
-  createBlog,
-  deleteBlogAction,
-  initializeBlogs,
-  likeBlogAction,
-} from "./reducers/blogReducer"
+import { initializeBlogs } from "./reducers/blogReducer"
 import { setUser } from "./reducers/loggedUserReducer"
+import { Route, Routes, useNavigate } from "react-router-dom"
+import Nav from "./components/Nav"
+import Users from "./components/Users"
 
 const App = () => {
   //const [blogs, setBlogs] = useState([])
@@ -27,6 +25,7 @@ const App = () => {
   const notification = useSelector((state) => state.notification)
   const user = useSelector((state) => state.loggedUser)
   const blogs = useSelector((state) => state.blogs)
+  const navigate = useNavigate()
 
   useEffect(() => {
     dispatch(initializeBlogs())
@@ -49,6 +48,7 @@ const App = () => {
       window.localStorage.setItem("loggedUser", JSON.stringify(response))
       setUsername("")
       setPassword("")
+      navigate("/")
     } catch (exception) {
       dispatch(
         setNotification({ error: true, message: "Invalid credentials!" })
@@ -58,35 +58,6 @@ const App = () => {
       }, 3000)
       setUsername("")
       setPassword("")
-    }
-  }
-
-  const likeBlog = async (blog) => {
-    dispatch(likeBlogAction(blog))
-  }
-
-  const deleteBlog = async (blogObject) => {
-    if (
-      window.confirm(
-        `Blog ${blogObject.title} by ${blogObject.author} will be removed. Do you wish to continue?`
-      )
-    ) {
-      const loggedUser = JSON.parse(window.localStorage.getItem("loggedUser"))
-      blogService.setToken(loggedUser.token)
-      try {
-        dispatch(deleteBlogAction(blogObject.id))
-        dispatch(
-          setNotification({
-            ...notification,
-            message: `Blog ${blogObject.title} by ${blogObject.author} is deleted!`,
-          })
-        )
-        setTimeout(() => {
-          dispatch(setNotification({ ...notification, message: null }))
-        }, 3000)
-      } catch (exception) {
-        console.log(exception)
-      }
     }
   }
 
@@ -108,25 +79,41 @@ const App = () => {
     )
   }
   return (
-    <div>
-      <Notification />
-      <h2>blogs</h2>
-      <Logout user={user} />
-      <Toggleable label="add" ref={ref}>
-        <NewBlog refs={ref} />
-      </Toggleable>
-      <div>
-        {blogs.map((blog) => (
-          <Blog
-            key={blog.id}
-            username={user.username}
-            blog={blog}
-            likeBlog={likeBlog}
-            deleteBlog={deleteBlog}
-          />
-        ))}
-      </div>
-    </div>
+    <>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <div>
+              <Notification />
+              <h2>blogs</h2>
+              <Nav />
+              <Logout user={user} />
+              <Toggleable label="add" ref={ref}>
+                <NewBlog refs={ref} />
+              </Toggleable>
+              <div>
+                {blogs.map((blog) => (
+                  <Blog key={blog.id} username={user.username} blog={blog} />
+                ))}
+              </div>
+            </div>
+          }
+        />
+        <Route
+          path="/users"
+          element={
+            <>
+              <Notification />
+              <h2>blogs</h2>
+              <Nav />
+              <Logout user={user} />
+              <Users />
+            </>
+          }
+        />
+      </Routes>
+    </>
   )
 }
 
