@@ -4,7 +4,6 @@ import blogService from "./services/blogs"
 import loginService from "./services/logins"
 import LoginForm from "./components/LoginForm"
 import Notification from "./components/Notification"
-import Logout from "./components/Logout"
 import NewBlog from "./components/NewBlog"
 import Toggleable from "./components/Toggleable"
 import { setNotification } from "./reducers/notificationReducer"
@@ -16,6 +15,7 @@ import Nav from "./components/Nav"
 import Users from "./components/Users"
 import User from "./components/User"
 import userService from "./services/users"
+import BlogDetailed from "./components/BlogDetailed"
 
 const App = () => {
   //const [blogs, setBlogs] = useState([])
@@ -36,8 +36,14 @@ const App = () => {
   const user = useSelector((state) => state.loggedUser)
   const blogs = useSelector((state) => state.blogs)
   const navigate = useNavigate()
-  const match = useMatch("/users/:id")
-  const matchUser = match ? users.find((el) => el.id === match.params.id) : null
+  const matchUserId = useMatch("/users/:id")
+  const matchBlogId = useMatch("/blogs/:id")
+  const matchUser = matchUserId
+    ? users.find((el) => el.id === matchUserId.params.id)
+    : null
+  const matchBlog = matchBlogId
+    ? blogs.find((el) => el.id === matchBlogId.params.id)
+    : null
 
   useEffect(() => {
     dispatch(initializeBlogs())
@@ -99,8 +105,7 @@ const App = () => {
             <div>
               <Notification />
               <h2>blogs</h2>
-              <Nav />
-              <Logout user={user} />
+              <Nav user={user} />
               <Toggleable label="add" ref={ref}>
                 <NewBlog refs={ref} />
               </Toggleable>
@@ -118,8 +123,7 @@ const App = () => {
             <>
               <Notification />
               <h2>blogs</h2>
-              <Nav />
-              <Logout user={user} />
+              <Nav user={user} />
               <Users users={users} />
             </>
           }
@@ -128,8 +132,17 @@ const App = () => {
           path="/users/:id"
           element={
             <>
-              <Nav />
+              <Nav user={user} />
               <User user={matchUser} />
+            </>
+          }
+        />
+        <Route
+          path="/blogs/:id"
+          element={
+            <>
+              <Nav user={user} />
+              <BlogDetailed blog={matchBlog} />
             </>
           }
         />

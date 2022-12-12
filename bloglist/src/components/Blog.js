@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
+import { Link } from "react-router-dom"
 import { deleteBlogAction, likeBlogAction } from "../reducers/blogReducer"
 import { setNotification } from "../reducers/notificationReducer"
 import blogService from "../services/blogs"
@@ -8,7 +9,7 @@ const Blog = ({ username, blog }) => {
   const [view, setView] = useState(false)
   const dispatch = useDispatch()
   const notification = useSelector((state) => state.notification)
-
+  console.log("prop bloggggg", blog)
   const toggleView = () => {
     setView(!view)
   }
@@ -60,8 +61,10 @@ const Blog = ({ username, blog }) => {
     </ul>
   ) : (
     <div className="simpleview">
-      <b>{blog.title}</b> by {blog.author}{" "}
-      <button onClick={toggleView}>view</button>
+      <Link to={`/blogs/${blog.id}`}>
+        <b>{blog.title}</b>
+      </Link>{" "}
+      by {blog.author} <button onClick={toggleView}>view</button>
     </div>
   )
 }
