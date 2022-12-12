@@ -1,3 +1,5 @@
+import { List, ListItem, ListItemText } from "@mui/material"
+
 const User = ({ user }) => {
   if (!user) return null
   return (
@@ -7,16 +9,16 @@ const User = ({ user }) => {
       </div>
       <div>
         <h3>added blogs</h3>
-        <ul>
+        <List>
           {user.blogs
             ? user.blogs.map((el) => (
-                <li key={el.id}>
+                <ListItemText key={el.id}>
                   <b>{el.title}</b> <em>by {el.author} </em>
                   <b> - {el.likes} liked</b>
-                </li>
+                </ListItemText>
               ))
             : null}
-        </ul>
+        </List>
       </div>
     </>
   )

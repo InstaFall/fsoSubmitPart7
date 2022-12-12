@@ -1,28 +1,39 @@
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+} from "@mui/material"
 import { Link } from "react-router-dom"
 
 const Users = ({ users }) => {
   return (
     <>
-      <table>
-        <thead>
-          <tr>
-            <th></th>
-            <th scope="col">
-              <b>blogs created</b>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.map((el) => (
-            <tr key={el.id}>
-              <th scope="row">
-                <Link to={`/users/${el.id}`}>{el.name || el.username}</Link>
-              </th>
-              <td>{el.blogs.length}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell component="th"></TableCell>
+              <TableCell component="th" scope="col">
+                <b>blogs created</b>
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {users.map((el) => (
+              <TableRow key={el.id}>
+                <TableCell scope="row">
+                  <Link to={`/users/${el.id}`}>{el.name || el.username}</Link>
+                </TableCell>
+                <TableCell>{el.blogs.length}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </>
   )
 }

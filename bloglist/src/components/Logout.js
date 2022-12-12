@@ -9,10 +9,10 @@ const Logout = (props) => {
     dispatch(setUser(null))
   }
   return (
-    <>
+    <div style={{ marginLeft: "3em", marginTop: 10 }}>
       <b>{user.username}</b> logged in{" "}
       <button onClick={handleLogout}>log out</button>
-    </>
+    </div>
   )
 }
 

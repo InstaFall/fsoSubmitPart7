@@ -1,3 +1,4 @@
+import { Button } from "@mui/material"
 import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { Link } from "react-router-dom"
@@ -56,7 +57,14 @@ const Blog = ({ username, blog }) => {
       <li>id: {blog.id}</li>
       <li>User: {blog.user.username}</li>
       {username === blog.user.username && (
-        <button onClick={() => deleteBlog(blog)}>delete</button>
+        <Button
+          variant="outlined"
+          color="primary"
+          size="large"
+          onClick={() => deleteBlog(blog)}
+        >
+          delete
+        </Button>
       )}
     </ul>
   ) : (
@@ -64,7 +72,10 @@ const Blog = ({ username, blog }) => {
       <Link to={`/blogs/${blog.id}`}>
         <b>{blog.title}</b>
       </Link>{" "}
-      by {blog.author} <button onClick={toggleView}>view</button>
+      by {blog.author}{" "}
+      <Button variant="text" color="primary" onClick={toggleView}>
+        view
+      </Button>
     </div>
   )
 }

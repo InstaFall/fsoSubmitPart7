@@ -1,3 +1,4 @@
+import { Button, IconButton, TextField } from "@mui/material"
 import { useState } from "react"
 import { useDispatch } from "react-redux"
 import { commentBlogAction, likeBlogAction } from "../../reducers/blogReducer"
@@ -7,16 +8,17 @@ const CommentBox = ({ comment, setComment, commentHandler }) => {
     <div className="commentSection" style={{ marginTop: "1.5em" }}>
       <div>
         <form onSubmit={commentHandler}>
-          <textarea
+          <TextField
+            label="comment"
             value={comment}
             onChange={(e) => setComment(e.target.value)}
             name="comment"
             placeholder="add a comment.."
-          ></textarea>
+          ></TextField>
           <div>
-            <button className="button-4" type="submit">
+            <Button variant="contained" color="primary" type="submit">
               send
-            </button>
+            </Button>
           </div>
         </form>
       </div>
@@ -31,6 +33,7 @@ const BlogDetailed = ({ blog }) => {
   const commentHandler = (e) => {
     e.preventDefault()
     dispatch(commentBlogAction(blog, comment))
+    setComment("")
   }
   if (!blog) {
     return null
@@ -47,7 +50,14 @@ const BlogDetailed = ({ blog }) => {
       </div>
       <div>
         {blog.likes} likes{" "}
-        <button onClick={() => dispatch(likeBlogAction(blog))}>like</button>
+        <Button
+          variant="outlined"
+          color="primary"
+          onClick={() => dispatch(likeBlogAction(blog))}
+          size="small"
+        >
+          like
+        </Button>
       </div>
       <div>added by {blog.user.name}</div>
       <div>

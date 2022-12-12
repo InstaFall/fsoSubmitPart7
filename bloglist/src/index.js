@@ -8,6 +8,7 @@ import blogReducer from "./reducers/blogReducer"
 import notificationReducer from "./reducers/notificationReducer"
 import loggedUserReducer from "./reducers/loggedUserReducer"
 import { BrowserRouter as Router } from "react-router-dom"
+import { Container } from "@mui/material"
 
 const store = configureStore({
   reducer: {
@@ -19,7 +20,9 @@ const store = configureStore({
 ReactDOM.createRoot(document.getElementById("root")).render(
   <Provider store={store}>
     <Router>
-      <App />
+      <Container>
+        <App />
+      </Container>
     </Router>
   </Provider>
 )
